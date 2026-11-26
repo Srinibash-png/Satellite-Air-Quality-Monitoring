@@ -15,7 +15,14 @@ def _features(lat,lon,day):
     population=np.clip(5000+18000*np.exp(-((x/.04)**2+(y/.04)**2)),500,30000)
     no2=1.5+1.8*roads+.4*np.sin(day/6)
     aod=.25+.08*roads+.05*np.cos(day/7)
-    return np.column_stack([lat,lon,temperature,humidity,wind,rainfall,elevation,ndvi,roads,population,no2,aod,np.sin(2*np.pi*day/365),np.cos(2*np.pi*day/365)])
+    #new line
+    n = len(lat)
+    return np.column_stack([
+    lat, lon, temperature, humidity, wind, rainfall,
+    elevation, ndvi, roads, population, no2, aod,
+    np.full(n, np.sin(2*np.pi*day/365)),
+    np.full(n, np.cos(2*np.pi*day/365)),])
+    #return np.column_stack([lat,lon,temperature,humidity,wind,rainfall,elevation,ndvi,roads,population,no2,aod,np.sin(2*np.pi*day/365),np.cos(2*np.pi*day/365)])
 def make_demo_data(n=1800,seed=7):
     rng=np.random.default_rng(seed)
     lat=rng.uniform(BOUNDS["south"],BOUNDS["north"],n); lon=rng.uniform(BOUNDS["west"],BOUNDS["east"],n)
